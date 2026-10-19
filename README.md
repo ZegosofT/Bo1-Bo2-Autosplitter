@@ -3,11 +3,11 @@
 A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (BO1) and *Call of Duty: Black Ops II* (BO2) Zombies, designed for LiveSplit 1.8.37 and above.
 
 <p align="center">
-  <a href="https://youtu.com/1d5oAM2jzo8" target="_blank">
-    <img src="https://img.youtube.com/vi/1d5oAM2jzo8/maxresdefault.jpg" alt="Video Tutorial" width="600" style="border-radius: 8px;">
+  <a href="https://www.youtube.com/watch?v=__2ye51dt4s" target="_blank">
+    <img src="https://img.youtube.com/vi/__2ye51dt4s/maxresdefault.jpg" alt="Video Tutorial" width="600" style="border-radius: 8px;">
   </a>
   <br>
-  <strong>🎬 <a href="https://youtu.com/1d5oAM2jzo8" target="_blank">Watch the Video Setup Tutorial on YouTube</a></strong>
+  <strong>🎬 <a href="https://www.youtube.com/watch?v=__2ye51dt4s" target="_blank">Watch the Video Setup Tutorial on YouTube</a></strong>
 </p>
 
 <p align="center">
