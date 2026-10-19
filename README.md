@@ -26,6 +26,13 @@ To get the layout already fully configured for speedrunning:
 
 ---
 
+## Important Note for Black Ops 1 (BO1) Players
+Immediately after loading any map for the first time, you **must** do a **Fast Restart** or **Restart Level** (`fast_restart` command or in-game restart). 
+- *Why?* The Black Ops engine often skips its initial memory write to the round-change HUD flag during a fresh map load, which would prevent the first round splits from triggering properly. 
+- Restarting forces proper memory initialization and standardizes player control timing at ~3.4s.
+
+---
+
 ## Overview of Components
 
 When you use the autosplitter, two distinct lines appear in your layout:
