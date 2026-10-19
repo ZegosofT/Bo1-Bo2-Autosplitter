@@ -26,7 +26,7 @@ If you haven't already, download and install the latest version of LiveSplit fro
 4. Double-click the newly added **Scriptable Auto Splitter** component in your layout editor.
 5. Under the script settings, click **Browse** and select your script file (you can download [bo1-bo2_Autosplitter.asl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/bo1-bo2_Autosplitter.asl) directly from the release).
 
-*Note: Once added, the script will automatically create two text components in your layout: **Game Timer** and **Round**.*
+*Note: Once added, the script will automatically create two text components in your layout: **Game Timer** and **Round**. The default LiveSplit **Timer** component can be removed as the script handles time tracking natively.*
 
 ### 3. Use the Speedrun Layout (Recommended)
 To get the layout already fully configured for speedrunning:
