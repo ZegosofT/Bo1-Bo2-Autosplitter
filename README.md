@@ -3,12 +3,24 @@
 A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (BO1) and *Call of Duty: Black Ops II* (BO2) Zombies, designed for LiveSplit 1.8.37 and above.
 
 <p align="center">
+  <a href="https://youtu.com/1d5oAM2jzo8" target="_blank">
+    <img src="https://img.youtube.com/vi/1d5oAM2jzo8/maxresdefault.jpg" alt="Video Tutorial" width="600" style="border-radius: 8px;">
+  </a>
+  <br>
+  <strong>🎬 <a href="https://youtu.com/1d5oAM2jzo8" target="_blank">Watch the Video Setup Tutorial on YouTube</a></strong>
+</p>
+
+<p align="center">
   <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/bo1-bo2_Autosplitter.asl">
     <img src="https://img.shields.io/badge/Download-ASL_Script-blue?style=for-the-badge&logo=github" alt="Download ASL">
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_Layout.lsl">
     <img src="https://img.shields.io/badge/Download-Layout_.lsl-green?style=for-the-badge&logo=github" alt="Download Layout">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_FirstRoom_Splits.lss">
+    <img src="https://img.shields.io/badge/Download-Splits_.lss-orange?style=for-the-badge&logo=github" alt="Download Splits">
   </a>
 </p>
 
@@ -83,11 +95,6 @@ Pausing the game natively via the game's pause menu freezes the internal game cl
 - **Round Number (`round2`):** Reads the current round value to manage round-based splits, intermissions, and animation delays when the round number updates on screen.
 
 ---
-
-## Known Limitations
-
-- Memory offsets are specific to tested game versions and process builds (such as specific Plutonium updates). Game patches modifying game binaries may require offset adjustments.
-- The Steam and BGamer builds of BO1 do not support direct round-number memory addresses; therefore, the BO1 round timer relies on the round-change flag cycle instead.
 
 ## Credits
 
