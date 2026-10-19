@@ -80,11 +80,6 @@ By default, the manual pause is bound to the **F2** key. If you wish to change i
 
 ---
 
-## Known Limitations
-
-- Memory offsets are specific to tested game versions and process builds (such as specific Plutonium updates). Game patches modifying game binaries may require offset adjustments.
-- The Steam and BGamer builds of BO1 do not support direct round-number memory addresses; therefore, the BO1 round timer relies on the round-change flag cycle instead.
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
