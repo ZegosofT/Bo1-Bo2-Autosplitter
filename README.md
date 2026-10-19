@@ -2,6 +2,16 @@
 
 A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (BO1) and *Call of Duty: Black Ops II* (BO2) Zombies, designed for LiveSplit 1.8.37 and above.
 
+<p align="center">
+  <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/bo1-bo2_Autosplitter.asl">
+    <img src="https://img.shields.io/badge/Download-ASL_Script-blue?style=for-the-badge&logo=github" alt="Download ASL">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_Layout.lsl">
+    <img src="https://img.shields.io/badge/Download-Layout_.lsl-green?style=for-the-badge&logo=github" alt="Download Layout">
+  </a>
+</p>
+
 ---
 
 ## How to Install
@@ -9,20 +19,24 @@ A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (B
 ### 1. Download LiveSplit
 If you haven't already, download and install the latest version of LiveSplit from the official website: [LiveSplit Website](https://livesplit.org/).
 
-### 2. Add the Auto Splitter Script
+### 2. Download the Project Files
+Download the required files directly from the latest release:
+- 📥 [Download bo1-bo2_Autosplitter.asl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/bo1-bo2_Autosplitter.asl)
+- 📥 [Download Bo1-Bo2_Layout.lsl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_Layout.lsl)
+
+### 3. Add the Auto Splitter Script
 1. Open **LiveSplit**.
 2. Right-click LiveSplit and select **Edit Layout...**
 3. Click the **`+`** icon, go to **Control**, and select **Scriptable Auto Splitter**.
 4. Double-click the newly added **Scriptable Auto Splitter** component in your layout editor.
-5. Under the script settings, click **Browse** and select your `Bo1-Bo2_Autosplitter.asl` file.
+5. Under the script settings, click **Browse** and select your downloaded `bo1-bo2_Autosplitter.asl` file.
 
 *Note: Once added, the script will automatically create two text components in your layout: **Game Timer** and **Round**.*
 
-### 3. Use the Speedrun Layout (Recommended)
+### 4. Use the Speedrun Layout (Recommended)
 To get the layout already fully configured for speedrunning:
-1. Download the **`Bo1-Bo2_Layout.lsl`** file from this repository.
-2. In LiveSplit, right-click and select **Open Layout...**
-3. Choose the downloaded `Bo1-Bo2_Layout.lsl` file.
+1. In LiveSplit, right-click and select **Open Layout...**
+2. Choose your downloaded `Bo1-Bo2_Layout.lsl` file.
 
 ---
 
@@ -36,7 +50,7 @@ Immediately after loading any map for the first time, you **must** do a **Fast R
 ## Overview of Components
 
 When you use the autosplitter, two distinct lines appear in your layout:
-- **Game Timer**: Displays the active game time for your run, pausing automatically during native in-game pauses.
+- **Game Timer**: Displays the active game time for your run, pausing automatically during loading screens or native in-game pauses.
 - **Round**: Displays the custom timer for the current round (freezes when the last zombie dies and restarts when the next round begins).
 
 ---
