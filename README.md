@@ -38,6 +38,12 @@ To get the layout already fully configured for speedrunning:
 Since the auto splitter reads game memory locally, it only runs on the **host's** machine during co-op games. If you are playing co-op as a non-host player and want your LiveSplit timer to automatically stay synchronized with the host, you can install [LiveSplit.TimerSync by oJumpy](https://github.com/oJumpy/LiveSplit.TimerSync).
 *(Place the downloaded `.dll` file directly inside your LiveSplit `Components` folder).*
 
+### 5. Import the First Room Splits
+To load the standardized round splits for First Room runs:
+1. Download the splits file directly from the release: [Bo1-Bo2_FirstRoom_Splits.lss](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_FirstRoom_Splits.lss).
+2. In LiveSplit, right-click and select **Open Splits...** -> **From File...**
+3. Select your downloaded `Bo1-Bo2_FirstRoom_Splits.lss` file.
+
 ---
 
 ## Important Note for Black Ops 1 (BO1) Players
