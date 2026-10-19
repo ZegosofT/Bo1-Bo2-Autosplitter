@@ -3,15 +3,29 @@
 // One LiveSplit Auto Splitter (ASL) script for both games.
 // Written for LiveSplit 1.8.37 and its "Scriptable Auto Splitter" component.
 // =============================================================================
+//
+// WHAT IT DOES
+//   Game Timer  : a LiveSplit Text component ("Game Timer") created by the script
+//                 that tracks the game's internal active time counter.
+//   Round Timer : a LiveSplit Text component ("Round") created automatically
+//                 that measures the current round duration.
+//   Lobby Timer : a LiveSplit Text component ("Lobby") tracking raw game time.
+//   Splits      : one split per round.
+//
+// SUPPORTED PROCESSES
+//   Plutonium : "plutonium-bootstrapper-win32.exe", BO1 and BO2.
+//   Steam     : "BlackOps.exe", BO1 only.
+//   BGamer    : "BGamerT5.exe", BO1 only.
+// =============================================================================
 
 state("plutonium-bootstrapper-win32")
 {
     // --- BO1 ---
-    int ticks1 : 0x1679870;
-    byte rc1 : 0x165695D;
+    int ticks1 : 0x1679870; // game time counter, +20 per second (1 tick = 50 ms)
+    byte rc1 : 0x165695D;   // round change flag, toggles around each round transition
     // --- BO2 ---
-    int ticks2 : 0x1DC155C;
-    byte round2 : 0x1F3B710;
+    int ticks2 : 0x1DC155C;   // game time counter, +20 per second (1 tick = 50 ms)
+    byte round2 : 0x1F3B710;  // current round number
 }
 
 state("BlackOps")
@@ -28,25 +42,30 @@ state("BGamerT5")
 
 startup
 {
-    refreshRate = 20;
+    refreshRate = 20; // 50 ms ticks
     timer.CurrentTimingMethod = TimingMethod.GameTime;
 
+    // ===== Game identifiers =====
     vars.GAME_UNKNOWN = 0;
     vars.GAME_BO1 = 1;
     vars.GAME_BO2 = 2;
 
+    // ===== BO1 constants =====
     vars.FIRST_DELAY_MS = 7233.3;
     vars.NEXT_DELAY_MS = 0.0;
 
+    // ===== BO2 constants =====
     vars.START_TICKS2 = 146;
     vars.INTERMISSION_TICKS2 = 250;
     vars.FIRST_ROUND_INTERMISSION_TICKS2 = 166;
     vars.TimerModel = new TimerModel { CurrentState = timer };
 
+    // ===== Game detection state =====
     vars.detectedGame = vars.GAME_UNKNOWN;
     vars.prevTicks1 = -1;
     vars.prevTicks2 = -1;
 
+    // ===== Time formatting =====
     vars.FormatMs = (Func<double, string>)(ms =>
     {
         if (ms < 0) ms = 0;
@@ -65,7 +84,7 @@ startup
         return ts.ToString(@"s\.ff");
     });
 
-    // ===== "Text" components manager with forced order and white text color =====
+    // ===== "Text" components manager =====
     vars.textCache = new Dictionary<string, object>();
 
     vars.FindOrCreateText = (Func<string, object>)(id =>
@@ -86,25 +105,6 @@ startup
                 .GetValue(comp, null);
             found.GetType().GetProperty("Text1").SetValue(found, id, null);
         }
-
-        // Force white color override for the right text (value)
-        try
-        {
-            var propOverride = found.GetType().GetProperty("OverrideTextColor");
-            if (propOverride != null) propOverride.SetValue(found, true, null);
-
-            var propColor = found.GetType().GetProperty("TextColor");
-            if (propColor != null) propColor.SetValue(found, Color.White, null);
-
-            var propOverrideRight = found.GetType().GetProperty("OverrideTimeColor"); // selon les versions LiveSplit.Text
-            // On gère aussi l'override global / right text color s'il existe :
-            var propOverrideValueColor = found.GetType().GetProperty("OverrideWithDefaultColor");
-            // Pour être sûr, on applique la couleur blanche via les propriétés standard du TextComponent :
-            var setCustomColor = found.GetType().GetMethod("SetCustomColor", new Type[] { typeof(bool), typeof(Color) });
-            // Sinon, l'API .NET classique des settings TextComponent gère souvent 'OverrideTextColor' et 'TextColor'.
-        }
-        catch (Exception) { }
-
         return found;
     });
 
@@ -125,37 +125,10 @@ startup
     vars.lastGameText = "";
     vars.lastLobbyText = "";
 
-    vars.PAUSE_VK = 0x71; // F2
-    vars.paused = false;
-    vars.pauseStart = 0;
-    vars.pauseAcc = 0;
-    vars.pauseKeyDown = false;
-
-    vars.PausedAt = (Func<int, int>)(raw =>
-        (int)vars.pauseAcc + ((bool)vars.paused ? Math.Max(0, raw - (int)vars.pauseStart) : 0));
-
-    vars.GetKey = null;
-    try
-    {
-        var asmB = AppDomain.CurrentDomain.DefineDynamicAssembly(
-            new AssemblyName("LsPauseKey"), System.Reflection.Emit.AssemblyBuilderAccess.Run);
-        var modB = asmB.DefineDynamicModule("LsPauseKey");
-        var typB = modB.DefineType("Native", TypeAttributes.Public | TypeAttributes.Class);
-        var mB = typB.DefinePInvokeMethod("GetAsyncKeyState", "user32.dll",
-            MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.PinvokeImpl,
-            CallingConventions.Standard, typeof(short), new Type[] { typeof(int) },
-            System.Runtime.InteropServices.CallingConvention.Winapi,
-            System.Runtime.InteropServices.CharSet.Auto);
-        mB.SetImplementationFlags(MethodImplAttributes.PreserveSig);
-        var nativeType = typB.CreateType();
-        var mi = nativeType.GetMethod("GetAsyncKeyState");
-        vars.GetKey = (Func<int, int>)(vk => (int)(short)mi.Invoke(null, new object[] { vk }));
-    }
-    catch (Exception e)
-    {
-        vars.GetKey = null;
-        MessageBox.Show("BO1/BO2 autosplitter: cannot hook the pause key.\n\n" + e.Message, "BO1/BO2 autosplitter");
-    }
+    // Force creation order immediately on startup (Lobby -> Game Timer -> Round)
+    vars.FindOrCreateText("Lobby");
+    vars.FindOrCreateText("Game Timer");
+    vars.FindOrCreateText("Round");
 }
 
 init
@@ -167,10 +140,10 @@ init
     vars.prevTicks1 = -1;
     vars.prevTicks2 = -1;
 
+    // ===== BO1 state =====
     vars.hasPrev = false;
     vars.lastTicks = 0;
     vars.lastRc = 0;
-    vars.rtStartPaused = 0;
     vars.rtState = 0;
     vars.rtStartMs = 0.0;
     vars.rtFrozenMs = 0.0;
@@ -180,6 +153,7 @@ init
     vars.lastRoundTimeMs = 0.0;
     vars.lastSegmentMs = 0.0;
 
+    // ===== BO2 state =====
     vars.firstUpdate2 = true;
     vars.awaitingStart2 = true;
     vars.phase2 = 0;
@@ -192,21 +166,11 @@ init
     vars.lastSplitRound2 = 1;
     vars.alignPending2 = false;
     vars.alignTarget2 = 0;
-    vars.roundStartPaused2 = 0;
-
-    vars.paused = false;
-    vars.pauseStart = 0;
-    vars.pauseAcc = 0;
-    vars.pauseKeyDown = false;
-
-    // Force creation order on init so they appear as: Lobby -> Game Timer -> Round
-    vars.FindOrCreateText("Lobby");
-    vars.FindOrCreateText("Game Timer");
-    vars.FindOrCreateText("Round");
 }
 
 update
 {
+    // ----- Game detection -----
     if ((int)vars.detectedGame == (int)vars.GAME_UNKNOWN)
     {
         int t1 = Convert.ToInt32((object)current.ticks1);
@@ -228,43 +192,7 @@ update
 
     bool runBO1 = ((int)vars.detectedGame == (int)vars.GAME_BO1);
 
-    {
-        int rawNow, rawOld;
-        if (runBO1)
-        {
-            rawNow = Convert.ToInt32((object)current.ticks1);
-            rawOld = Convert.ToInt32((object)old.ticks1);
-        }
-        else
-        {
-            rawNow = Convert.ToInt32((object)current.ticks2);
-            rawOld = Convert.ToInt32((object)old.ticks2);
-        }
-
-        if (rawNow < rawOld) { vars.paused = false; vars.pauseAcc = 0; vars.pauseStart = 0; }
-
-        if (vars.GetKey != null)
-        {
-            int ks = ((Func<int, int>)vars.GetKey)((int)vars.PAUSE_VK);
-            bool down = (ks & 0x8000) != 0;
-            bool tap = (ks & 0x0001) != 0;
-            if ((down || tap) && !(bool)vars.pauseKeyDown && timer.CurrentPhase == TimerPhase.Running)
-            {
-                if (!(bool)vars.paused)
-                {
-                    vars.paused = true;
-                    vars.pauseStart = rawNow;
-                }
-                else
-                {
-                    vars.pauseAcc = (int)vars.pauseAcc + Math.Max(0, rawNow - (int)vars.pauseStart);
-                    vars.paused = false;
-                }
-            }
-            vars.pauseKeyDown = down;
-        }
-    }
-
+    // ----- BO1 -----
     if (runBO1)
     {
         int ticksNow = Convert.ToInt32((object)current.ticks1);
@@ -277,8 +205,6 @@ update
         double startMs = vars.rtStartMs;
         double frozenMs = vars.rtFrozenMs;
         double pendingAt = vars.rtPendingAtMs;
-        int startPaused = (int)vars.rtStartPaused;
-        var pausedAt = (Func<int, int>)vars.PausedAt;
 
         bool restart = false;
         bool flipUp = false;
@@ -300,7 +226,6 @@ update
             startMs = 0.0;
             frozenMs = 0.0;
             pendingAt = 0.0;
-            startPaused = 0;
         }
         else
         {
@@ -326,7 +251,7 @@ update
                 case 4:
                     if (flipUp)
                     {
-                        frozenMs = nowMs - startMs - (pausedAt(ticksNow) - startPaused) * 50.0;
+                        frozenMs = nowMs - startMs;
                         st = 5;
                     }
                     break;
@@ -357,20 +282,18 @@ update
                     vars.lastSegmentMs = pendingAt - startMs;
                 }
                 startMs = pendingAt;
-                startPaused = pausedAt((int)(pendingAt / 50.0));
                 frozenMs = 0.0;
                 st = 4;
             }
         }
 
-        double rms = (st == 4) ? (nowMs - startMs - (pausedAt(ticksNow) - startPaused) * 50.0) : frozenMs;
+        double rms = (st == 4) ? (nowMs - startMs) : frozenMs;
         if (rms < 0) rms = 0;
 
         vars.rtState = st;
         vars.rtStartMs = startMs;
         vars.rtFrozenMs = frozenMs;
         vars.rtPendingAtMs = pendingAt;
-        vars.rtStartPaused = startPaused;
         vars.roundTimeMs = rms;
 
         string txt = vars.FormatMs(rms);
@@ -392,10 +315,10 @@ update
             }
         }
     }
+
+    // ----- BO2 -----
     else
     {
-        var pausedAt2 = (Func<int, int>)vars.PausedAt;
-
         if (vars.firstUpdate2)
         {
             vars.firstUpdate2 = false;
@@ -460,8 +383,7 @@ update
         if (!vars.awaitingStart2 && current.round2 > old.round2 && old.round2 > 0)
         {
             if (vars.phase2 == 1)
-                vars.frozen2 = (int)current.ticks2 - (int)vars.roundStart2
-                               - (pausedAt2((int)current.ticks2) - (int)vars.roundStartPaused2);
+                vars.frozen2 = (int)current.ticks2 - (int)vars.roundStart2;
             else if (vars.phase2 == 0)
                 vars.frozen2 = 0;
             vars.phase2 = 2;
@@ -486,13 +408,11 @@ update
         {
             vars.phase2 = 1;
             vars.roundStart2 = (int)vars.flipTicks2 + (int)vars.nextIntermissionTicks2;
-            vars.roundStartPaused2 = pausedAt2((int)vars.roundStart2);
             vars.nextIntermissionTicks2 = vars.INTERMISSION_TICKS2;
         }
 
         int shown2 = 0;
-        if (vars.phase2 == 1) shown2 = (int)current.ticks2 - (int)vars.roundStart2
-                                       - (pausedAt2((int)current.ticks2) - (int)vars.roundStartPaused2);
+        if (vars.phase2 == 1) shown2 = (int)current.ticks2 - (int)vars.roundStart2;
         else if (vars.phase2 == 2) shown2 = vars.frozen2;
         if (shown2 < 0) shown2 = 0;
 
@@ -512,6 +432,7 @@ update
         }
     }
 
+    // ----- Game Timer -----
     if (!vars.textFailed)
     {
         try
@@ -520,13 +441,12 @@ update
             if (runBO1)
             {
                 int raw1 = Convert.ToInt32((object)current.ticks1);
-                int g1 = raw1 - ((Func<int, int>)vars.PausedAt)(raw1);
-                gameTxt = vars.FormatMs((g1 > 0 ? g1 : 0) * 50.0);
+                gameTxt = vars.FormatMs((raw1 > 0 ? raw1 : 0) * 50.0);
             }
             else
             {
                 int raw2 = Convert.ToInt32((object)current.ticks2);
-                int g2 = raw2 - (int)vars.START_TICKS2 - ((Func<int, int>)vars.PausedAt)(raw2);
+                int g2 = raw2 - (int)vars.START_TICKS2;
                 gameTxt = vars.FormatTicks2(g2 > 0 ? g2 : 0);
             }
 
@@ -543,6 +463,7 @@ update
         }
     }
 
+    // ----- Lobby Timer -----
     if (!vars.textFailed)
     {
         try
@@ -579,12 +500,11 @@ gameTime
     if ((int)vars.detectedGame == (int)vars.GAME_BO1)
     {
         int raw1 = (int)current.ticks1;
-        int g1 = raw1 - ((Func<int, int>)vars.PausedAt)(raw1);
-        return TimeSpan.FromMilliseconds((g1 > 0 ? g1 : 0) * 50);
+        return TimeSpan.FromMilliseconds((raw1 > 0 ? raw1 : 0) * 50);
     }
 
     int raw2 = (int)current.ticks2;
-    int t = raw2 - (int)vars.START_TICKS2 - ((Func<int, int>)vars.PausedAt)(raw2);
+    int t = raw2 - (int)vars.START_TICKS2;
     return TimeSpan.FromMilliseconds((t > 0 ? t : 0) * 50);
 }
 
@@ -621,10 +541,6 @@ reset
 
 onReset
 {
-    vars.paused = false;
-    vars.pauseStart = 0;
-    vars.pauseAcc = 0;
-
     if ((int)vars.detectedGame == (int)vars.GAME_BO1)
     {
         vars.splitReady = false;
