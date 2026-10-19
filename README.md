@@ -16,7 +16,7 @@ If you haven't already, download and install the latest version of LiveSplit fro
 4. Double-click the newly added **Scriptable Auto Splitter** component in your layout editor.
 5. Under the script settings, click **Browse** and select your `Bo1-Bo2_Autosplitter.asl` file.
 
-*Note: Once added, the script will automatically create three text components in your layout: **Lobby**, **Game Timer**, and **Round**.*
+*Note: Once added, the script will automatically create two text components in your layout: **Game Timer** and **Round**.*
 
 ### 3. Use the Speedrun Layout (Recommended)
 To get the layout already fully configured for speedrunning:
@@ -28,8 +28,7 @@ To get the layout already fully configured for speedrunning:
 
 ## Overview of Components
 
-When you use the autosplitter, three distinct lines appear in your layout:
-- **Lobby**: Displays the raw game time based on the game's internal clock.
+When you use the autosplitter, two distinct lines appear in your layout:
 - **Game Timer**: Displays the active game time for your run, pausing automatically during loading screens or native in-game pauses.
 - **Round**: Displays the custom timer for the current round (freezes when the last zombie dies and restarts when the next round begins).
 
@@ -44,7 +43,7 @@ The script supports both BO1 and BO2 (especially via Plutonium, which runs both 
 - Once detected, the choice is locked for the entire duration of the game session until you close the game process.
 
 ### 2. In-Game Pause Logic
-Pausing the game natively via the game's pause menu freezes the internal game clock. This naturally pauses all timers (**Lobby**, **Game Timer**, and **Round**) universally.
+Pausing the game natively via the game's pause menu freezes the internal game clock. This naturally pauses all timers (**Game Timer** and **Round**) universally.
 
 ### 3. Memory Addresses & Game Mechanics
 

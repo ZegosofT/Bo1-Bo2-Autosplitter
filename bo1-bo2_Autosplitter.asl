@@ -9,7 +9,6 @@
 //                 that tracks the game's internal active time counter.
 //   Round Timer : a LiveSplit Text component ("Round") created automatically
 //                 that measures the current round duration.
-//   Lobby Timer : a LiveSplit Text component ("Lobby") tracking raw game time.
 //   Splits      : one split per round.
 //
 // SUPPORTED PROCESSES
@@ -123,10 +122,8 @@ startup
     vars.textFailed = false;
     vars.lastText = "";
     vars.lastGameText = "";
-    vars.lastLobbyText = "";
 
-    // Force creation order immediately on startup (Lobby -> Game Timer -> Round)
-    vars.FindOrCreateText("Lobby");
+    // Force creation order immediately on startup (Game Timer -> Round)
     vars.FindOrCreateText("Game Timer");
     vars.FindOrCreateText("Round");
 }
@@ -460,32 +457,6 @@ update
         {
             vars.textFailed = true;
             MessageBox.Show("Autosplitter: cannot update the Game Timer text line.\n\n" + e.Message, "BO1/BO2 autosplitter");
-        }
-    }
-
-    // ----- Lobby Timer -----
-    if (!vars.textFailed)
-    {
-        try
-        {
-            string lobbyTxt;
-            if (runBO1)
-                lobbyTxt = vars.FormatMs(Convert.ToInt32((object)current.ticks1) * 50.0);
-            else
-            {
-                int lt = Convert.ToInt32((object)current.ticks2) - (int)vars.START_TICKS2;
-                lobbyTxt = vars.FormatTicks2(lt > 0 ? lt : 0);
-            }
-            if (lobbyTxt != (string)vars.lastLobbyText)
-            {
-                vars.lastLobbyText = lobbyTxt;
-                vars.SetText("Lobby", lobbyTxt);
-            }
-        }
-        catch (Exception e)
-        {
-            vars.textFailed = true;
-            MessageBox.Show("Autosplitter: cannot update the Lobby text line.\n\n" + e.Message, "BO1/BO2 autosplitter");
         }
     }
 }
