@@ -29,7 +29,7 @@ To get the layout already fully configured for speedrunning:
 ## Overview of Components
 
 When you use the autosplitter, two distinct lines appear in your layout:
-- **Game Timer**: Displays the active game time for your run, pausing automatically during loading screens or native in-game pauses.
+- **Game Timer**: Displays the active game time for your run, pausing automatically during native in-game pauses.
 - **Round**: Displays the custom timer for the current round (freezes when the last zombie dies and restarts when the next round begins).
 
 ---
@@ -56,11 +56,6 @@ Pausing the game natively via the game's pause menu freezes the internal game cl
 - **Round Number (`round2`):** Reads the current round value to manage round-based splits, intermissions, and animation delays when the round number updates on screen.
 
 ---
-
-## Known Limitations
-
-- Memory offsets are specific to tested game versions and process builds (such as specific Plutonium updates). Game patches modifying game binaries may require offset adjustments.
-- The Steam and BGamer builds of BO1 do not support direct round-number memory addresses; therefore, the BO1 round timer relies on the round-change flag cycle instead.
 
 ## License
 
