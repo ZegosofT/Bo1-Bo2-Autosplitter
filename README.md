@@ -37,6 +37,7 @@ To get the layout already fully configured for speedrunning:
 ### 4. Co-op / Non-Host Setup: TimerSync (Optional Tool)
 Since the auto splitter reads game memory locally, it only runs on the **host's** machine during co-op games. If you are playing co-op as a non-host player and want your LiveSplit timer to automatically stay synchronized with the host, you can install [LiveSplit.TimerSync by oJumpy](https://github.com/oJumpy/LiveSplit.TimerSync).
 *(Place the downloaded `.dll` file directly inside your LiveSplit `Components` folder).*
+
 ---
 
 ## Important Note for Black Ops 1 (BO1) Players
