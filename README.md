@@ -19,24 +19,20 @@ A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (B
 ### 1. Download LiveSplit
 If you haven't already, download and install the latest version of LiveSplit from the official website: [LiveSplit Website](https://livesplit.org/).
 
-### 2. Download the Project Files
-Download the required files directly from the latest release:
-- 📥 [Download bo1-bo2_Autosplitter.asl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/bo1-bo2_Autosplitter.asl)
-- 📥 [Download Bo1-Bo2_Layout.lsl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_Layout.lsl)
-
-### 3. Add the Auto Splitter Script
+### 2. Add the Auto Splitter Script
 1. Open **LiveSplit**.
 2. Right-click LiveSplit and select **Edit Layout...**
 3. Click the **`+`** icon, go to **Control**, and select **Scriptable Auto Splitter**.
 4. Double-click the newly added **Scriptable Auto Splitter** component in your layout editor.
-5. Under the script settings, click **Browse** and select your downloaded `bo1-bo2_Autosplitter.asl` file.
+5. Under the script settings, click **Browse** and select your script file (you can download [bo1-bo2_Autosplitter.asl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/bo1-bo2_Autosplitter.asl) directly from the release).
 
 *Note: Once added, the script will automatically create two text components in your layout: **Game Timer** and **Round**.*
 
-### 4. Use the Speedrun Layout (Recommended)
+### 3. Use the Speedrun Layout (Recommended)
 To get the layout already fully configured for speedrunning:
-1. In LiveSplit, right-click and select **Open Layout...**
-2. Choose your downloaded `Bo1-Bo2_Layout.lsl` file.
+1. Download the layout file directly: [Bo1-Bo2_Layout.lsl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_Layout.lsl).
+2. In LiveSplit, right-click and select **Open Layout...**
+3. Choose the downloaded `Bo1-Bo2_Layout.lsl` file.
 
 ---
 
