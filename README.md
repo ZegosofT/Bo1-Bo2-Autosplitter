@@ -55,3 +55,36 @@ By default, the manual pause is bound to the **F2** key. If you wish to change i
 2. Look for this line near the top (inside the `startup` section):
    ```csharp
    vars.PAUSE_VK = 0x71; // F2
+   ```
+3. Replace `0x71` with the hexadecimal Virtual-Key code corresponding to your preferred key.
+  - You can find the complete official list of codes on the [Microsoft Virtual-Key Codes documentation](https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes).
+  - Tip: Function keys are universally supported and identical on all keyboards:
+    - `F1` = `0x70`
+    - `F2` = `0x71`
+    - `F3` = `0x72`
+    - `F4` = `0x73`
+    - `F5` = `0x74`
+4. Save the file (`Ctrl + S`), and in LiveSplit, right-click and select **Reset** or reload your layout to apply the changes.
+
+---
+
+## Memory Addresses & Game Mechanics
+
+### Black Ops 1 (BO1)
+- **Game Time Counter (`ticks1`):** Reads the internal game timer (progressing at 50 ms per tick) to track time and handle automatic resets when starting a new map.
+- **Round Change Flag (`rc1`):** Monitors the toggle state used to detect round transitions and trigger automatic round splits.
+
+### Black Ops 2 (BO2)
+- **Game Time Counter (`ticks2`):** Tracks the internal timeline of the match, aligned with the HUD game timer starting point.
+- **Round Number (`round2`):** Reads the current round value to manage round-based splits, intermissions, and animation delays when the round number updates on screen.
+
+---
+
+## Known Limitations
+
+- Memory offsets are specific to tested game versions and process builds (such as specific Plutonium updates). Game patches modifying game binaries may require offset adjustments.
+- The Steam and BGamer builds of BO1 do not support direct round-number memory addresses; therefore, the BO1 round timer relies on the round-change flag cycle instead.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
