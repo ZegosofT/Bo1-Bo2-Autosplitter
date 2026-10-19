@@ -26,7 +26,7 @@ If you haven't already, download and install the latest version of LiveSplit fro
 4. Double-click the newly added **Scriptable Auto Splitter** component in your layout editor.
 5. Under the script settings, click **Browse** and select your script file (you can download [bo1-bo2_Autosplitter.asl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/bo1-bo2_Autosplitter.asl) directly from the release).
 
-*Note: Once added, the script will automatically create two text components in your layout: **Game Timer** and **Round**. The default LiveSplit **Timer** component can be removed as the script handles time tracking natively.*
+*Note: Once added, the script will automatically create two text components in your layout: **Game Timer** and **Round**. You can remove the default LiveSplit **Timer** component, as the script provides its own.*
 
 ### 3. Use the Speedrun Layout (Recommended)
 To get the layout already fully configured for speedrunning:
@@ -34,6 +34,9 @@ To get the layout already fully configured for speedrunning:
 2. In LiveSplit, right-click and select **Open Layout...**
 3. Choose the downloaded `Bo1-Bo2_Layout.lsl` file.
 
+### 4. Co-op / Non-Host Setup: TimerSync (Optional Tool)
+Since the auto splitter reads game memory locally, it only runs on the **host's** machine during co-op games. If you are playing co-op as a non-host player and want your LiveSplit timer to automatically stay synchronized with the host, you can install [LiveSplit.TimerSync by oJumpy](https://github.com/oJumpy/LiveSplit.TimerSync).
+*(Place the downloaded `.dll` file directly inside your LiveSplit `Components` folder).*
 ---
 
 ## Important Note for Black Ops 1 (BO1) Players
@@ -73,6 +76,15 @@ Pausing the game natively via the game's pause menu freezes the internal game cl
 - **Round Number (`round2`):** Reads the current round value to manage round-based splits, intermissions, and animation delays when the round number updates on screen.
 
 ---
+
+## Known Limitations
+
+- Memory offsets are specific to tested game versions and process builds (such as specific Plutonium updates). Game patches modifying game binaries may require offset adjustments.
+- The Steam and BGamer builds of BO1 do not support direct round-number memory addresses; therefore, the BO1 round timer relies on the round-change flag cycle instead.
+
+## Credits
+
+- [oJumpy](https://github.com/oJumpy) for developing [LiveSplit.TimerSync](https://github.com/oJumpy/LiveSplit.TimerSync), making co-op timer synchronization seamless for non-host players.
 
 ## License
 
