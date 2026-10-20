@@ -1,8 +1,6 @@
 # ⏱️ Last Spawn Display (`Bo1-Bo2_SpawnTimes.asl`)
 
-A secondary, completely passive LiveSplit Auto Splitter (ASL) script designed to display the expected **spawn time** for rounds 1 through 20. 
-
-Unlike the main autosplitter, this script **does not interact with splits or timer states**. It simply reads the current in-game round memory address and dynamically updates a custom layout text line.
+A secondary, standalone LiveSplit Auto Splitter (ASL) script that dynamically displays the expected **last zombie spawn time** for the current round (Rounds 1 to 20) at the very top of your LiveSplit layout[cite: 5].
 
 <p align="center">
   <img src="../../assets/images/Bo1-Bo2_SpawnTimes.png" alt="Bo1-Bo2 Spawn Times Preview" width="300" style="border-radius: 8px;">
@@ -12,34 +10,27 @@ Unlike the main autosplitter, this script **does not interact with splits or tim
 
 ## 📥 Download
 
-* **Script File:** [Bo1-Bo2_SpawnTimes.asl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_SpawnTimes.asl)
+* **Script File:** [Bo1-Bo2_SpawnTimes.asl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_SpawnTimes.asl)[cite: 3]
 
 ---
 
-## ✨ Features
+## ✨ Features & How It Works
 
-- **Automated Round Tracking:** Reads the active round from *Black Ops 1* or *Black Ops 2* (Plutonium, Steam, BGamer).
-- **Spawn Time Mapping:** Displays the formatted spawn delay for the current round (e.g., `1 (10.5)` for Round 1 up to `20 (50.2)` for Round 20).
-- **Automatic Cleanup:** Automatically removes the text line from your layout once you pass Round 20.
-- **Fast Restart Friendly:** Restores and resets the text component cleanly to `1 (10.5)` whenever a map is restarted or reset.
+- **Zero-Setup Auto-Injection:** You do **not** need to manually add or configure any text component in LiveSplit[cite: 5]. The script creates and inserts its own text component at the **very top** of your layout automatically[cite: 5].
+- **Split Index Tracking:** Uses your current LiveSplit split index ($X = \text{CurrentSplitIndex} + 1$) to determine the active round[cite: 5].
+- **Formatted Display `X (y)`:** Displays the current round $X$ alongside its calculated spawn time $y$ (e.g., `1 (10.5)` for Round 1 in Solo, `1 (12.3)` in 2P Coop)[cite: 5].
+- **Auto Solo / Coop Detection:** Reads your selected LiveSplit comparison, category, or game name to automatically switch between Solo and 2-Player Coop spawn tables (detects `"Coop"`)[cite: 5].
+- **Automatic Cleanup:** Automatically deletes the text component from your layout once you pass Round 20 ($X > 20$) and recreates it cleanly at Round 1 upon resetting[cite: 5].
 
 ---
 
-## 🛠️ Installation & Setup
+## 🛠️ Installation
 
-1. **Download the script:** Get [`Bo1-Bo2_SpawnTimes.asl`](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_SpawnTimes.asl) from the official release.
-2. **Add a Text Component in LiveSplit:**
-   - Right-click LiveSplit $\rightarrow$ **Edit Layout...**
-   - Click **`+`** $\rightarrow$ **Text** $\rightarrow$ **Text**.
-   - Open its **Settings** and set **Left Text** to exactly:
-     ```text
-     last spawn
-     ```
-   - Leave **Right Text** blank (the script will fill this dynamically). Click **OK**.
-3. **Attach the Script:**
-   - Click **`+`** $\rightarrow$ **Control** $\rightarrow$ **Scriptable Auto Splitter** (add a second instance if you already have the main autosplitter loaded).
-   - Double-click it, click **Browse**, and select `Bo1-Bo2_SpawnTimes.asl`.
-   - *(Optional)* Uncheck **Reset** in the script settings if you want your main autosplitter to handle resets exclusively.
+1. Download [`Bo1-Bo2_SpawnTimes.asl`](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_SpawnTimes.asl)[cite: 3].
+2. In LiveSplit, right-click $\rightarrow$ **Edit Layout...**[cite: 3]
+3. Click **`+`** $\rightarrow$ **Control** $\rightarrow$ **Scriptable Auto Splitter** (add a second instance alongside your main autosplitter)[cite: 3].
+4. Double-click it, click **Browse**, and select `Bo1-Bo2_SpawnTimes.asl`[cite: 3].
+5. Click **OK**. The spawn time text line will appear at the top of your layout automatically![cite: 5]
 
 ---
 
