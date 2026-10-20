@@ -69,7 +69,11 @@ We provide standalone ASL scripts to enhance your LiveSplit display without inte
 <table>
   <tr>
     <td valign="top">
-      * **[Spawn Times Display (`Bo1-Bo2_SpawnTimes.asl`)](./docs/optional-scripts/last-spawn-times.md)**: Zero-setup script that automatically injects a text component at the top of your layout showing expected zombie spawn times <code>X (y)</code> for rounds 1 to 20 based on your current split index and game mode (Solo / Coop).
+      <ul>
+        <li>
+          <b><a href="./docs/optional-scripts/last-spawn-times.md">Spawn Times Display (<code>Bo1-Bo2_SpawnTimes.asl</code>)</a></b>: Zero-setup script that automatically injects a text component at the top of your layout showing expected zombie spawn times <code>X (y)</code> for rounds 1 to 20 based on your current split index and game mode (Solo / Coop).
+        </li>
+      </ul>
     </td>
     <td align="center" valign="middle" width="180">
       <a href="./docs/optional-scripts/last-spawn-times.md">
