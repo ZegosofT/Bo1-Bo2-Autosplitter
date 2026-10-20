@@ -8,9 +8,13 @@ A secondary, standalone LiveSplit Auto Splitter (ASL) script that dynamically di
 
 ---
 
-## Download
+## Installation
 
-* **Script File:** [Bo1-Bo2_SpawnTimes.asl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_SpawnTimes.asl)
+1. Download [`Bo1-Bo2_SpawnTimes.asl`](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_SpawnTimes.asl).
+2. In LiveSplit, right-click -> **Edit Layout...**
+3. Click **`+`** -> **Control** -> **Scriptable Auto Splitter** (add a second instance alongside your main autosplitter).
+4. Double-click it, click **Browse**, and select `Bo1-Bo2_SpawnTimes.asl`.
+5. Click **OK**. The spawn time text line will appear at the top of your layout automatically!
 
 ---
 
@@ -24,14 +28,5 @@ A secondary, standalone LiveSplit Auto Splitter (ASL) script that dynamically di
 
 ---
 
-## Installation
-
-1. Download [`Bo1-Bo2_SpawnTimes.asl`](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_SpawnTimes.asl).
-2. In LiveSplit, right-click -> **Edit Layout...**
-3. Click **`+`** -> **Control** -> **Scriptable Auto Splitter** (add a second instance alongside your main autosplitter).
-4. Double-click it, click **Browse**, and select `Bo1-Bo2_SpawnTimes.asl`.
-5. Click **OK**. The spawn time text line will appear at the top of your layout automatically!
-
----
 
 [Back to Main Documentation](../../README.md)
