@@ -89,12 +89,12 @@ We provide standalone ASL scripts to enhance your LiveSplit display without inte
     <td valign="top">
       <ul>
         <li>
-          <b><a href="./docs/optional-scripts/jugg-grenades.md">Jug Grenades Counter (<code>Bo1-Bo2_JugGrenades.asl</code>)</a></b>: Standalone companion script for Jug Side Solo runs. Displays required grenade counts (rounds 21–45) in format <code>X ........ N Nades</code>, automatically activating when comparing against Jug Solo runs.
+          <b><a href="./docs/optional-scripts/Bo1_JuggPrenades_SOLO.md">Jug Grenades Counter (<code>Bo1-Bo2_JugGrenades.asl</code>)</a></b>: Standalone companion script for Jug Side Solo runs. Displays required grenade counts (rounds 21–45) in format <code>X ........ N Nades</code>, automatically activating when comparing against Jug Solo runs.
         </li>
       </ul>
     </td>
     <td align="center" valign="middle" width="180">
-      <a href="./docs/optional-scripts/jugg-grenades.md">
+      <a href="./docs/optional-scripts/Bo1_JuggPrenades_SOLO.md">
         <img src="./assets/images/Bo1_JuggPrenades_SOLO.png" alt="Bo1 Jug Grenades Preview" width="150" style="border-radius: 6px;">
       </a>
     </td>
