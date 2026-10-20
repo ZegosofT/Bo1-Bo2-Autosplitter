@@ -7,7 +7,7 @@ A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (B
     <img src="https://img.youtube.com/vi/__2ye51dt4s/maxresdefault.jpg" alt="Video Tutorial" width="600" style="border-radius: 8px;">
   </a>
   <br>
-  <strong>🎬 <a href="https://www.youtube.com/watch?v=__2ye51dt4s" target="_blank">Watch the Video Setup Tutorial on YouTube</a></strong>
+  <strong><a href="https://www.youtube.com/watch?v=__2ye51dt4s" target="_blank">Watch the Video Setup Tutorial on YouTube</a></strong>
 </p>
 
 <p align="center">
@@ -62,11 +62,15 @@ Since the auto splitter reads game memory locally, it only runs on the **host's*
 
 ---
 
-## 🧩 Optional Scripts & Add-ons
+## Optional Scripts & Add-ons
 
 We provide standalone ASL scripts to enhance your LiveSplit display without interfering with main splits:
 
-* **[⏱️ Spawn Times Display (`Bo1-Bo2_SpawnTimes.asl`)](./docs/optional-scripts/last-spawn-times.md)**: Zero-setup script that automatically injects a text component at the top of your layout showing expected zombie spawn times `X (y)` for rounds 1 to 20 based on your current split index and game mode (Solo / Coop).
+* **[Spawn Times Display (`Bo1-Bo2_SpawnTimes.asl`)](./docs/optional-scripts/last-spawn-times.md)**: Zero-setup script that automatically injects a text component at the top of your layout showing expected zombie spawn times `X (y)` for rounds 1 to 20 based on your current split index and game mode (Solo / Coop).
+
+<p align="center">
+  <img src="./assets/images/Bo1-Bo2_SpawnTimes.png" alt="Bo1-Bo2 Spawn Times Preview" width="180" style="border-radius: 6px;">
+</p>
 
 ---
 
