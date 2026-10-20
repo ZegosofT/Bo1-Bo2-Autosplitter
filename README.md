@@ -66,11 +66,18 @@ Since the auto splitter reads game memory locally, it only runs on the **host's*
 
 We provide standalone ASL scripts to enhance your LiveSplit display without interfering with main splits:
 
-* **[Spawn Times Display (`Bo1-Bo2_SpawnTimes.asl`)](./docs/optional-scripts/last-spawn-times.md)**: Zero-setup script that automatically injects a text component at the top of your layout showing expected zombie spawn times `X (y)` for rounds 1 to 20 based on your current split index and game mode (Solo / Coop).
-
-<p align="center">
-  <img src="./assets/images/Bo1-Bo2_SpawnTimes.png" alt="Bo1-Bo2 Spawn Times Preview" width="180" style="border-radius: 6px;">
-</p>
+<table>
+  <tr>
+    <td valign="top">
+      * **[Spawn Times Display (`Bo1-Bo2_SpawnTimes.asl`)](./docs/optional-scripts/last-spawn-times.md)**: Zero-setup script that automatically injects a text component at the top of your layout showing expected zombie spawn times <code>X (y)</code> for rounds 1 to 20 based on your current split index and game mode (Solo / Coop).
+    </td>
+    <td align="center" valign="middle" width="180">
+      <a href="./docs/optional-scripts/last-spawn-times.md">
+        <img src="./assets/images/Bo1-Bo2_SpawnTimes.png" alt="Bo1-Bo2 Spawn Times Preview" width="150" style="border-radius: 6px;">
+      </a>
+    </td>
+  </tr>
+</table>
 
 ---
 
