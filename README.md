@@ -19,12 +19,16 @@ A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (B
     <img src="https://img.shields.io/badge/Download-SpawnTimes_ASL-purple?style=for-the-badge&logo=github" alt="Download SpawnTimes ASL">
   </a>
   &nbsp;&nbsp;
+  <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_JugGrenades.asl">
+    <img src="https://img.shields.io/badge/Download-JugGrenades_ASL-orange?style=for-the-badge&logo=github" alt="Download JugGrenades ASL">
+  </a>
+  &nbsp;&nbsp;
   <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_Layout.lsl">
     <img src="https://img.shields.io/badge/Download-Layout_.lsl-green?style=for-the-badge&logo=github" alt="Download Layout">
   </a>
   &nbsp;&nbsp;
   <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_FirstRoom_Splits.lss">
-    <img src="https://img.shields.io/badge/Download-Splits_.lss-orange?style=for-the-badge&logo=github" alt="Download Splits">
+    <img src="https://img.shields.io/badge/Download-Splits_.lss-yellow?style=for-the-badge&logo=github" alt="Download Splits">
   </a>
 </p>
 
@@ -78,6 +82,20 @@ We provide standalone ASL scripts to enhance your LiveSplit display without inte
     <td align="center" valign="middle" width="180">
       <a href="./docs/optional-scripts/last-spawn-times.md">
         <img src="./assets/images/Bo1-Bo2_SpawnTimes.png" alt="Bo1-Bo2 Spawn Times Preview" width="150" style="border-radius: 6px;">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <ul>
+        <li>
+          <b><a href="./docs/optional-scripts/jugg-grenades.md">Jug Grenades Counter (<code>Bo1-Bo2_JugGrenades.asl</code>)</a></b>: Standalone companion script for Jug Side Solo runs. Displays required grenade counts (rounds 21–45) in format <code>X ........ N Nades</code>, automatically activating when comparing against Jug Solo runs.
+        </li>
+      </ul>
+    </td>
+    <td align="center" valign="middle" width="180">
+      <a href="./docs/optional-scripts/jugg-grenades.md">
+        <img src="./assets/images/Bo1_JuggPrenades_SOLO.png" alt="Bo1 Jug Grenades Preview" width="150" style="border-radius: 6px;">
       </a>
     </td>
   </tr>
