@@ -12,13 +12,17 @@ A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (B
 
 <p align="center">
   <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/bo1-bo2_Autosplitter.asl">
-    <img src="https://img.shields.io/badge/Download-ASL_Script-blue?style=for-the-badge&logo=github" alt="Download ASL">
+    <img src="https://img.shields.io/badge/Download-Main_ASL-blue?style=for-the-badge&logo=github" alt="Download Main ASL">
   </a>
-  &nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;
+  <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_SpawnTimes.asl">
+    <img src="https://img.shields.io/badge/Download-SpawnTimes_ASL-purple?style=for-the-badge&logo=github" alt="Download SpawnTimes ASL">
+  </a>
+  &nbsp;&nbsp;
   <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_Layout.lsl">
     <img src="https://img.shields.io/badge/Download-Layout_.lsl-green?style=for-the-badge&logo=github" alt="Download Layout">
   </a>
-  &nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;
   <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_FirstRoom_Splits.lss">
     <img src="https://img.shields.io/badge/Download-Splits_.lss-orange?style=for-the-badge&logo=github" alt="Download Splits">
   </a>
@@ -55,6 +59,14 @@ To load the standardized round splits for First Room runs:
 ### 5. Co-op / Non-Host Setup: TimerSync (Optional Tool)
 Since the auto splitter reads game memory locally, it only runs on the **host's** machine during co-op games. If you are playing co-op as a non-host player and want your LiveSplit timer to automatically stay synchronized with the host, you can install [LiveSplit.TimerSync by oJumpy](https://github.com/oJumpy/LiveSplit.TimerSync).
 *(Place the downloaded `.dll` file directly inside your LiveSplit `Components` folder).*
+
+---
+
+## 🧩 Optional Scripts & Add-ons
+
+We provide standalone ASL scripts to enhance your LiveSplit display without interfering with main splits[cite: 5]:
+
+* **[⏱️ Spawn Times Display (`Bo1-Bo2_SpawnTimes.asl`)](./docs/optional-scripts/last-spawn-times.md)**: Automatically injects a dynamic text component at the top of your layout showing expected zombie spawn times `X (y)` for rounds 1 to 20 based on your current split index and game mode (Solo / Coop)[cite: 5].
 
 ---
 
