@@ -8,9 +8,15 @@ A secondary, standalone LiveSplit Auto Splitter (ASL) script designed for Call o
 
 ---
 
-## Download
+## Installation
 
-* **Script File:** [Bo1_JuggPrenades_SOLO.asl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1_JuggPrenades_SOLO.asl)
+1. Ensure LiveSplit (1.8.x or newer) and your main autosplitter script are set up.
+2. Download [`Bo1_JuggPrenades_SOLO.asl`](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1_JuggPrenades_SOLO.asl).
+3. Right-click LiveSplit -> **Edit Layout...**
+4. Click **`+`** -> **Control** -> **Scriptable Auto Splitter**.
+5. Double-click the new Scriptable Auto Splitter component, click **Browse**, and select `Bo1_JuggPrenades_SOLO.asl`.
+6. Select or create a comparison whose name contains both `"Jug"` and `"Solo"` (e.g., `"Jug Side Solo r30 SR"`).
+7. The grenade counter will automatically appear at the top of your layout during rounds 21 through 45.
 
 ---
 
@@ -41,18 +47,6 @@ The table below lists the total number of grenades required per round as defined
 | **29** | 14 Nades | **38** | 37 Nades | -- | -- |
 
 *(Note: Data provided as reference values. If a round inside range 21–45 lacks an entry, `? Nades` will be displayed).*
-
----
-
-## Installation
-
-1. Ensure LiveSplit (1.8.x or newer) and your main autosplitter script are set up.
-2. Download [`Bo1_JuggPrenades_SOLO.asl`](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1_JuggPrenades_SOLO.asl).
-3. Right-click LiveSplit -> **Edit Layout...**
-4. Click **`+`** -> **Control** -> **Scriptable Auto Splitter**.
-5. Double-click the new Scriptable Auto Splitter component, click **Browse**, and select `Bo1_JuggPrenades_SOLO.asl`.
-6. Select or create a comparison whose name contains both `"Jug"` and `"Solo"` (e.g., `"Jug Side Solo r30 SR"`).
-7. The grenade counter will automatically appear at the top of your layout during rounds 21 through 45.
 
 ---
 
