@@ -1,6 +1,31 @@
-# BO1 & BO2 Zombies Auto Splitter (Plutonium / Steam / BGamer)
+# Bo1-Bo2 Autosplitter
 
-A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (BO1) and *Call of Duty: Black Ops II* (BO2) Zombies, designed for LiveSplit 1.8.37 and above.
+A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (BO1) and *Call of Duty: Black Ops II* (BO2) Zombies, built for the **First Room** category. It supports BO1 on Plutonium, Steam and BGamer, and BO2 on Plutonium. Designed for LiveSplit 1.8.37 and above.
+
+The main script (`bo1-bo2_Autosplitter.asl`) detects the game automatically and provides the Game Timer, the Round timer and the automatic round splits. (Optional companion scripts are also available.)
+
+<p align="center">
+  <a href="#optional-scripts--add-ons">
+    <img src="https://img.shields.io/badge/View-Optional_Scripts_%26_Add--ons-blue?style=for-the-badge" alt="View Optional Scripts and Add-ons">
+  </a>
+</p>
+
+---
+
+## Categories
+
+This script is meant to be used during First Room games, alongside Competitive-T5 (CT5) for BO1 on Plutonium and T6-B2FR-PATCH for BO2 on Plutonium. It also supports BO1 on Steam and BGamer. Below you can find the patches for First Room games, as well as alternatives for other categories.
+
+| Category | Patch | Creator | Link |
+| --- | --- | --- | --- |
+| Bo1 First Room | Competitive-T5 | EvelynYuki | [GitLab](https://gitlab.com/EvelynYuki/Competitive-T5) |
+| Bo2 First Room | T6-B2FR-PATCH | Zi0 | [GitHub](https://github.com/B2ORG/T6-B2FR-PATCH) |
+| EE Speedrun | Easter Egg GSC Timer | HuthTV | [GitHub](https://github.com/HuthTV/BO2-Easter-Egg-GSC-timer) |
+| Song Speedruns | B2SONG | Zi0 | [GitHub](https://github.com/B2ORG/T6-B2SONG-PATCH) |
+
+---
+
+## How to Install
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=__2ye51dt4s" target="_blank">
@@ -19,8 +44,8 @@ A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (B
     <img src="https://img.shields.io/badge/Download-SpawnTimes_ASL-purple?style=for-the-badge&logo=github" alt="Download SpawnTimes ASL">
   </a>
   &nbsp;&nbsp;
-  <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_JugGrenades.asl">
-    <img src="https://img.shields.io/badge/Download-JugGrenades_ASL-orange?style=for-the-badge&logo=github" alt="Download JugGrenades ASL">
+  <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1_JuggPrenades_SOLO.asl">
+    <img src="https://img.shields.io/badge/Download-JuggPrenadesSOLO_ASL-orange?style=for-the-badge&logo=github" alt="Download JuggPrenadesSOLO ASL">
   </a>
   &nbsp;&nbsp;
   <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_Layout.lsl">
@@ -32,10 +57,6 @@ A combined LiveSplit Auto Splitter (ASL) script for *Call of Duty: Black Ops* (B
   </a>
 </p>
 
----
-
-## How to Install
-
 ### 1. Download LiveSplit
 If you haven't already, download and install the latest version of LiveSplit from the official website: [LiveSplit Website](https://livesplit.org/).
 
@@ -46,7 +67,15 @@ If you haven't already, download and install the latest version of LiveSplit fro
 4. Double-click the newly added **Scriptable Auto Splitter** component in your layout editor.
 5. Under the script settings, click **Browse** and select your script file (you can download [bo1-bo2_Autosplitter.asl](https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/bo1-bo2_Autosplitter.asl) directly from the release).
 
-*Note: Once added, the script will automatically create two text components in your layout: **Game Timer** and **Round**. You can remove the default LiveSplit **Timer** component, as the script provides its own.*
+> [!TIP]
+> Once added, the script will automatically create two text components in your layout: **Game Timer** and **Round**. You can remove the default LiveSplit **Timer** component, as the script provides its own.
+
+> [!WARNING]
+> On Black Ops 1, a **"Fast Restart"** or **"Restart Level"** (`fast_restart` command or in-game restart) is required immediately after a map load.
+>
+> The Black Ops engine often skips its initial memory write to the `roundchange` HUD flag, preventing splits from triggering.
+>
+> Restarting forces proper initialization and standardizes player control timing at ~3.4s.
 
 ### 3. Use the Speedrun Layout (Recommended)
 To get the layout already fully configured for speedrunning:
@@ -89,7 +118,7 @@ We provide standalone ASL scripts to enhance your LiveSplit display without inte
     <td valign="top">
       <ul>
         <li>
-          <b><a href="./docs/optional-scripts/Bo1_JuggPrenades_SOLO.md">Jug Grenades Counter (<code>Bo1-Bo2_JugGrenades.asl</code>)</a></b>: Standalone companion script for Jug Side Solo runs. Displays required grenade counts (rounds 21–45) in format <code>X ........ N Nades</code>, automatically activating when comparing against Jug Solo runs.
+          <b><a href="./docs/optional-scripts/Bo1_JuggPrenades_SOLO.md">Jug Grenades Counter (<code>Bo1_JuggPrenades_SOLO.asl</code>)</a></b>: Standalone companion script for Jug Side Solo runs. Displays required grenade counts (rounds 21–45) in format <code>X ........ N Nades</code>, automatically activating when comparing against Jug Solo runs.
         </li>
       </ul>
     </td>
@@ -100,13 +129,6 @@ We provide standalone ASL scripts to enhance your LiveSplit display without inte
     </td>
   </tr>
 </table>
-
----
-
-## Important Note for Black Ops 1
-Immediately after loading any map for the first time, you **must** do a **Fast Restart** or **Restart Level** (`fast_restart` command or in-game restart). 
-- *Why?* The Black Ops engine often skips its initial memory write to the round-change HUD flag during a fresh map load, which would prevent the first round splits from triggering properly. 
-- Restarting forces proper memory initialization and standardizes player control timing at ~3.4s.
 
 ---
 

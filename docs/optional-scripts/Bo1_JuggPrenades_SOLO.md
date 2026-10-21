@@ -58,7 +58,7 @@ You can edit the script parameters at the top of the `startup` block:
 vars.MIN_ROUND = 21;      // First round where the component appears
 vars.MAX_ROUND = 45;      // Last round where the component appears
 vars.PAD = 0;             // Number of spaces added to left text for split alignment
-vars.INSERT_INDEX = 0;    // Position in layout (0 = top; set to 1 if sharing index with SpawnTimes)
+vars.INSERT_INDEX = 0;    // Position in the layout (0 = very top)
 vars.SUFFIX = " Nades";   // Label added after the grenade count
 ```
 
@@ -71,6 +71,10 @@ vars.SUFFIX = " Nades";   // Label added after the grenade count
   - Verify that your game process (`plutonium-bootstrapper-win32`, `BlackOps`, or `BGamerT5`) is running.
   - Verify your active comparison, category, or game name contains both `"Jug"` and `"Solo"` (case-insensitive) and does not contain `"Coop"`.
   - Ensure your split file starts at Round 1 (split index 0).
-- **Layout Index Conflicts:** If using both `Bo1-Bo2_SpawnTimes.asl` and `Bo1_JuggPrenades_SOLO.asl`, adjust `vars.INSERT_INDEX` in one of the scripts to `1` so they stack cleanly.
+- **Using Together With Spawn Times:** `Bo1-Bo2_SpawnTimes.asl` shows its line for rounds 1 to 20 and `Bo1_JuggPrenades_SOLO.asl` shows its line for rounds 21 to 45, both at the top of the layout. They are never displayed at the same time, so the grenade counter simply takes the place of the spawn times line.
 - **Stale Text Components:** Stale components matching current format rules are cleaned automatically at load. Older format components (e.g., `Grenades: 6` on left text) should be deleted manually from the Layout Editor.
 - **Limitations:** Alignment spaces (`PAD`) are approximate depending on layout fonts. Split skipping or reordering will shift the active round index.
+
+---
+
+[Back to Main Documentation](../../README.md)

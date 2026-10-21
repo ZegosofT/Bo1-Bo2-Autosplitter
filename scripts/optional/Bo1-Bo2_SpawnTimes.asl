@@ -63,7 +63,7 @@ startup
     // Font size (in points) of the spawn time text. Set to 0 to keep the layout's font.
     // It is re-applied every time the text is updated, so it also survives the
     // component being recreated (reset, fast_restart, ...).
-    vars.FONT_SIZE = 16f;
+    vars.FONT_SIZE = 9f;
 
     vars.spawnLC = null;
     vars.spawnSettings = null;
