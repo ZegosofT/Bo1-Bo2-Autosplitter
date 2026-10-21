@@ -14,9 +14,9 @@ The main script (`bo1-bo2_Autosplitter.asl`) detects the game automatically and 
 
 ## Categories
 
-This script is meant to be used during First Room games, alongside Competitive-T5 (CT5) for BO1 on Plutonium and T6-B2FR-PATCH for BO2 on Plutonium. It also supports BO1 on Steam and BGamer. Below you can find the patches for First Room games, as well as alternatives for other categories.
+This script is meant to be used during First Room games, alongside the Competitive-T5 (CT5) plugin for BO1 on Plutonium and the T6-B2FR-PATCH for BO2 on Plutonium. It also supports BO1 on Steam and BGamer. Below you can find the plugin and patches for First Room games, as well as alternatives for other categories.
 
-| Category | Patch | Creator | Link |
+| Category | Patch / Plugin | Creator | Link |
 | --- | --- | --- | --- |
 | Bo1 First Room | Competitive-T5 | EvelynYuki | [GitLab](https://gitlab.com/EvelynYuki/Competitive-T5) |
 | Bo2 First Room | T6-B2FR-PATCH | Zi0 | [GitHub](https://github.com/B2ORG/T6-B2FR-PATCH) |
@@ -167,7 +167,7 @@ Pausing the game natively via the game's pause menu freezes the internal game cl
 
 - [oJumpy](https://github.com/oJumpy) for developing [LiveSplit.TimerSync](https://github.com/oJumpy/LiveSplit.TimerSync), making co-op timer synchronization seamless for non-host players.
 - [Zi0](https://github.com/Zi0MIX) for developing the [T6-B2FR-PATCH](https://github.com/B2ORG/T6-B2FR-PATCH) (BO2 First Room) and the B2SONG patch, referenced in the Categories section.
-- [EvelynYuki](https://gitlab.com/EvelynYuki) for developing [Competitive-T5](https://gitlab.com/EvelynYuki/Competitive-T5) (BO1 First Room), referenced in the Categories section.
+- [EvelynYuki](https://gitlab.com/EvelynYuki) for developing the [Competitive-T5](https://gitlab.com/EvelynYuki/Competitive-T5) plugin (BO1 First Room), referenced in the Categories section.
 - [HuthTV](https://github.com/HuthTV) for developing the [Easter Egg GSC Timer](https://github.com/HuthTV/BO2-Easter-Egg-GSC-timer) (BO2 EE Speedrun), referenced in the Categories section.
 
 ## License
