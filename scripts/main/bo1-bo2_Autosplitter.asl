@@ -65,22 +65,30 @@ startup
     vars.prevTicks2 = -1;
 
     // ===== Time formatting =====
+    // Both formatters share the same format; units are only shown when needed:
+    //   under 1 minute : s.cc       (e.g. 7.45)
+    //   under 1 hour   : m:ss.cc    (e.g. 46:30.00)
+    //   1 hour +       : h:mm:ss.cc (e.g. 1:10:12.00, 25:24:32.00, hours are not wrapped at 24)
     vars.FormatMs = (Func<double, string>)(ms =>
     {
         if (ms < 0) ms = 0;
         int cs = (int)(ms / 10.0);
         int hundredths = cs % 100;
         int secs = (cs / 100) % 60;
-        int mins = cs / 6000;
-        return mins.ToString() + ":" + (secs < 10 ? "0" : "") + secs.ToString() + "." + (hundredths < 10 ? "0" : "") + hundredths.ToString();
+        int mins = (cs / 6000) % 60;
+        int hours = cs / 360000;
+        string tail = secs.ToString("00") + "." + hundredths.ToString("00");
+        if (hours > 0)
+            return hours.ToString() + ":" + mins.ToString("00") + ":" + tail;
+        if (mins > 0)
+            return mins.ToString() + ":" + tail;
+        return secs.ToString() + "." + hundredths.ToString("00");
     });
 
     vars.FormatTicks2 = (Func<int, string>)(t =>
     {
-        var ts = TimeSpan.FromMilliseconds(t * 50);
-        if (ts.TotalHours >= 1) return ts.ToString(@"h\:mm\:ss\.ff");
-        if (ts.TotalMinutes >= 1) return ts.ToString(@"m\:ss\.ff");
-        return ts.ToString(@"s\.ff");
+        // t is a number of 50 ms ticks
+        return vars.FormatMs((double)t * 50.0);
     });
 
     // ===== "Text" components manager =====
