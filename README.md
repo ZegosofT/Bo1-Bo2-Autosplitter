@@ -100,7 +100,7 @@ Since the auto splitter reads game memory locally, it only runs on the **host's*
 *(Place the downloaded `.dll` file directly inside your LiveSplit `Components` folder).*
 
 > [!TIP]
-> If you are playing Off-host Player (Client), your main ASL script (bo1-bo2_Autosplitter.asl) needs to be removed as the addresses only exists for the host.
+> If you are playing Off-host Player (Client), your main ASL script (bo1-bo2_Autosplitter.asl) needs to be removed as the addresses only exists for the host. The times will still splits using the host script.
 
 ---
 

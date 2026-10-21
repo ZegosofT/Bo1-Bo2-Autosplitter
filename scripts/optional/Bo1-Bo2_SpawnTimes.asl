@@ -61,9 +61,7 @@ startup
     vars.SPAWN_PAD = 0;
 
     // Font size (in points) of the spawn time text. Set to 0 to keep the layout's font.
-    // It is re-applied every time the text is updated, so it also survives the
-    // component being recreated (reset, fast_restart, ...).
-    vars.FONT_SIZE = 9f;
+    vars.FONT_SIZE = 10f;
 
     vars.spawnLC = null;
     vars.spawnSettings = null;
@@ -143,23 +141,18 @@ startup
         }
         catch (Exception) { }
 
-        // Font size: build a copy of the current font with the configured size
-        // (done through reflection so no extra assembly reference is needed)
         try
         {
             float size = Convert.ToSingle(vars.FONT_SIZE);
-            if (size > 0f)
-            {
-                object oldFont = s.GetType().GetProperty("Font1").GetValue(s, null);
-                if (oldFont != null)
-                {
-                    object family = oldFont.GetType().GetProperty("FontFamily").GetValue(oldFont, null);
-                    object style = oldFont.GetType().GetProperty("Style").GetValue(oldFont, null);
-                    object newFont = Activator.CreateInstance(oldFont.GetType(), new object[] { family, size, style });
-                    s.GetType().GetProperty("Font1").SetValue(s, newFont, null);
-                    s.GetType().GetProperty("OverrideFont1").SetValue(s, true, null);
-                }
-            }
+            if (size <= 0f) size = 9f;
+
+            var newFont = new System.Drawing.Font("Calibri Light Regular", size, System.Drawing.FontStyle.Regular);
+
+            s.GetType().GetProperty("Font1").SetValue(s, newFont, null);
+            s.GetType().GetProperty("OverrideFont1").SetValue(s, true, null);
+
+            s.GetType().GetProperty("Font2").SetValue(s, newFont, null);
+            s.GetType().GetProperty("OverrideFont2").SetValue(s, true, null);
         }
         catch (Exception e) { print("SpawnTimes: font failed: " + e.Message); }
     });
@@ -219,7 +212,6 @@ update
         if (x > (int)vars.MAX_X)
         {
             // Past the limit: remove the component
-            // (when arriving on this split, and as long as a reference still exists)
             if (x != (int)vars.lastX || vars.spawnSettings != null)
                 vars.RemoveSpawn();
             vars.lastX = x;

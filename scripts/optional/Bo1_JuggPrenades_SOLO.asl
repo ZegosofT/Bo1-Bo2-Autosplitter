@@ -136,6 +136,19 @@ startup
             if (cp != null) cp.SetValue(s, false, null);
         }
         catch (Exception) { }
+
+        try
+        {
+            float size = 12f;
+            var newFont = new System.Drawing.Font("Calibri Light Regular", size, System.Drawing.FontStyle.Regular);
+
+            s.GetType().GetProperty("Font1").SetValue(s, newFont, null);
+            s.GetType().GetProperty("OverrideFont1").SetValue(s, true, null);
+
+            s.GetType().GetProperty("Font2").SetValue(s, newFont, null);
+            s.GetType().GetProperty("OverrideFont2").SetValue(s, true, null);
+        }
+        catch (Exception e) { print("JugGrenades: font failed: " + e.Message); }
     });
 
     // ---- Cleanup of old components left in the layout (previous session / crash) ----
