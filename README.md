@@ -43,11 +43,11 @@ This script is meant to be used during First Room games, alongside the Competiti
   </a>
   &nbsp;&nbsp;
   <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_Layout.lsl">
-    <img src="https://img.shields.io/badge/Download-Layout_.lsl-green?style=for-the-badge&logo=github" alt="Download Layout">
+    <img src="https://img.shields.io/badge/Download-Layout_.lsl-green?style=for-the-badge&logo=github" alt="Download Layout LSL">
   </a>
   &nbsp;&nbsp;
   <a href="https://github.com/ZegosofT/Bo1-Bo2-Autosplitter/releases/download/v0.9.0/Bo1-Bo2_FirstRoom_Splits.lss">
-    <img src="https://img.shields.io/badge/Download-Splits_.lss-yellow?style=for-the-badge&logo=github" alt="Download Splits">
+    <img src="https://img.shields.io/badge/Download-Splits_.lss-yellow?style=for-the-badge&logo=github" alt="Download Splits LSS">
   </a>
 </p>
 
