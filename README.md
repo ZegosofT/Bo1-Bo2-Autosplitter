@@ -99,6 +99,9 @@ To get the layout already fully configured for speedrunning:
 Since the auto splitter reads game memory locally, it only runs on the **host's** machine during co-op games. If you are playing co-op as a non-host player and want your LiveSplit timer to automatically stay synchronized with the host, you can install [LiveSplit.TimerSync by oJumpy](https://github.com/oJumpy/LiveSplit.TimerSync).
 *(Place the downloaded `.dll` file directly inside your LiveSplit `Components` folder).*
 
+> [!TIP]
+> If you are playing Off-host Player (Client), your main ASL script (bo1-bo2_Autosplitter.asl) needs to be removed as the addresses only exists for the host.
+
 ---
 
 ## Optional Scripts & Add-ons
