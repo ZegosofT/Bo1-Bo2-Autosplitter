@@ -166,6 +166,9 @@ Pausing the game natively via the game's pause menu freezes the internal game cl
 ## Credits
 
 - [oJumpy](https://github.com/oJumpy) for developing [LiveSplit.TimerSync](https://github.com/oJumpy/LiveSplit.TimerSync), making co-op timer synchronization seamless for non-host players.
+- [Zi0](https://github.com/Zi0MIX) for developing the [T6-B2FR-PATCH](https://github.com/B2ORG/T6-B2FR-PATCH) (BO2 First Room) and the B2SONG patch, referenced in the Categories section.
+- [EvelynYuki](https://gitlab.com/EvelynYuki) for developing [Competitive-T5](https://gitlab.com/EvelynYuki/Competitive-T5) (BO1 First Room), referenced in the Categories section.
+- [HuthTV](https://github.com/HuthTV) for developing the [Easter Egg GSC Timer](https://github.com/HuthTV/BO2-Easter-Egg-GSC-timer) (BO2 EE Speedrun), referenced in the Categories section.
 
 ## License
 
