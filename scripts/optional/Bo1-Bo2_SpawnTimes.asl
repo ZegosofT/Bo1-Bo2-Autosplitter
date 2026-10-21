@@ -60,6 +60,11 @@ startup
     // Number of spaces added to the left of the text
     vars.SPAWN_PAD = 0;
 
+    // Font size (in points) of the spawn time text. Set to 0 to keep the layout's font.
+    // It is re-applied every time the text is updated, so it also survives the
+    // component being recreated (reset, fast_restart, ...).
+    vars.FONT_SIZE = 24f;
+
     vars.spawnLC = null;
     vars.spawnSettings = null;
     vars.lastX = -1;
@@ -137,6 +142,26 @@ startup
             if (cp != null) cp.SetValue(s, false, null);
         }
         catch (Exception) { }
+
+        // Font size: build a copy of the current font with the configured size
+        // (done through reflection so no extra assembly reference is needed)
+        try
+        {
+            float size = Convert.ToSingle(vars.FONT_SIZE);
+            if (size > 0f)
+            {
+                object oldFont = s.GetType().GetProperty("Font1").GetValue(s, null);
+                if (oldFont != null)
+                {
+                    object family = oldFont.GetType().GetProperty("FontFamily").GetValue(oldFont, null);
+                    object style = oldFont.GetType().GetProperty("Style").GetValue(oldFont, null);
+                    object newFont = Activator.CreateInstance(oldFont.GetType(), new object[] { family, size, style });
+                    s.GetType().GetProperty("Font1").SetValue(s, newFont, null);
+                    s.GetType().GetProperty("OverrideFont1").SetValue(s, true, null);
+                }
+            }
+        }
+        catch (Exception e) { print("SpawnTimes: font failed: " + e.Message); }
     });
 
     // ---- Cleanup of old "X (y)" components left in the layout ----
