@@ -159,6 +159,9 @@ Pausing the game natively via the game's pause menu freezes the internal game cl
 
 ### 3. Memory Addresses & Game Mechanics
 
+> [!NOTE]
+> No script or file in this project injects anything into the game. The auto splitter only reads memory addresses from Black Ops 1 and Black Ops 2 to track the game time and the rounds, and never writes to the game.
+
 #### Black Ops 1 (BO1)
 - **Game Time Counter (`ticks1`):** Reads the internal game timer (progressing at 50 ms per tick) to track time and handle automatic resets when starting a new map.
 - **Round Change Flag (`rc1`):** Monitors the toggle state used to detect round transitions and trigger automatic round splits.
