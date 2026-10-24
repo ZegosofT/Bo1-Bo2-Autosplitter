@@ -2,10 +2,21 @@
 // Call of Duty: Black Ops 1 & 2 Zombies - Jug Side Solo: Grenade Counter
 // Standalone script (load it in its own "Scriptable Auto Splitter" component).
 // - active ONLY when the compared run name contains both "Jug" and "Solo"
-// - creates a text component from round 21 up to round 45: the round number on
+// - shows a text component from round 21 up to round 45: the round number on
 //   the left and the total number of grenades needed on the right ("6 Nades")
-// - removes the component outside of that range, or when the comparison is
-//   not a Jug + Solo one
+// - removed outside of that range, or when the comparison is not Jug + Solo
+//
+// v2 - same anti-duplicate design as Bo1-Bo2_SpawnTimes.asl:
+//   * The script does NOT trust a stored reference to "its" component. Every
+//     few hundred ms (and on every change) it RECONCILES the layout: exactly
+//     1 matching text component when it must be shown, 0 when it must be
+//     hidden. Extra copies are removed, a missing one is created.
+//   * A component is "ours" when its right-side text (Text2) looks like
+//     "6 Nades" / "? Nades". This also matches the component received through
+//     Timer Sync from the host's layout: it is ADOPTED, not duplicated.
+//   * The component is always kept at the very BOTTOM of the layout.
+//   * All layout edits are done on the LiveSplit UI thread.
+//   * Layout edits use statically typed lists (Remove() fails on dynamic lists).
 // =============================================================================
 
 // Same state blocks as the main script (needed so the script attaches to the game)
@@ -50,122 +61,218 @@ startup
     // Number of spaces added to the left of the text
     vars.PAD = 0;
 
-    // Position of the component in the layout (0 = very top)
-    vars.INSERT_INDEX = 0;
-
     // Text shown after the grenade count (right side), e.g. "6 Nades"
     vars.SUFFIX = " Nades";
 
+    // Font size (in points) of the component
+    vars.FONT_SIZE = 12f;
+
+    // Keep the component at the very bottom of the layout (true) or leave it
+    // wherever it is once created (false)
+    vars.KEEP_AT_BOTTOM = true;
+
+    // The layout is re-checked at least this often (ms), even if nothing changed.
+    // This is what repairs the layout after a layout reload / Timer Sync refresh.
+    vars.RECHECK_MS = 500;
+
+    // true  = layout edits are marshaled to the LiveSplit UI thread (recommended)
+    // false = edits done directly from the script thread
+    vars.USE_UI_THREAD = true;
+
+    print("JugGrenades v2.0 loaded");
+
     vars.active = false;        // true when the comparison contains "jug" and "solo"
     vars.lastModeKey = null;
-    vars.lastRound = -1;
 
-    vars.spawnLC = null;
-    vars.spawnSettings = null;
+    // Runtime state
+    vars.busy = false;          // a UI-thread job is queued / running
+    vars.lastWant = false;      // last requested visibility
+    vars.lastLeft = null;       // last requested left text
+    vars.lastRight = null;      // last requested right text
+    vars.sw = System.Diagnostics.Stopwatch.StartNew();
 
-    // All right-side texts this script can display (used to find its own components in the layout)
-    vars.known = new HashSet<string>();
-    foreach (var kv in (Dictionary<int, int>)vars.grenades)
-        ((HashSet<string>)vars.known).Add(kv.Value.ToString() + (string)vars.SUFFIX);
-    ((HashSet<string>)vars.known).Add("?" + (string)vars.SUFFIX);
+    // Right-side text of our component: "6 Nades", "77 Nades", "? Nades"
+    vars.rx = new System.Text.RegularExpressions.Regex(
+        @"^(?:\d+|\?)\s*" +
+        System.Text.RegularExpressions.Regex.Escape(((string)vars.SUFFIX).Trim()) + "$");
 
-    // ---- Removes the component ----
-    vars.RemoveComp = (Action)(() =>
+    // ---- Runs an action on the LiveSplit UI thread (non-blocking) ----
+    vars.Ui = (Action<Action>)(a =>
     {
-        // 1) remove through the direct reference
-        if (vars.spawnLC != null)
-        {
-            try { timer.Layout.LayoutComponents.Remove(vars.spawnLC); }
-            catch (Exception e) { print("JugGrenades: remove(ref) failed: " + e.Message); }
-        }
-
-        // 2) safety net: remove any text component showing one of our values
+        System.Windows.Forms.Form f = null;
         try
         {
-            var known = (HashSet<string>)vars.known;
-            var stale = timer.Layout.LayoutComponents.Where(x => {
-                var comp = x.GetType().GetProperty("Component").GetValue(x, null);
-                if (comp == null || comp.GetType().Name != "TextComponent") return false;
-                var s = comp.GetType().GetProperty("Settings").GetValue(comp, null);
-                var t2 = s.GetType().GetProperty("Text2").GetValue(s, null) as string;
-                return t2 != null && known.Contains(t2.Trim());
-            }).ToList();
-            foreach (var lc in stale)
-                timer.Layout.LayoutComponents.Remove(lc);
-        }
-        catch (Exception e) { print("JugGrenades: remove(scan) failed: " + e.Message); }
-
-        vars.spawnLC = null;
-        vars.spawnSettings = null;
-        vars.lastRound = -1;
-    });
-
-    // ---- Creates the component if it does not exist ----
-    vars.EnsureComp = (Func<object>)(() =>
-    {
-        if (vars.spawnSettings == null)
-        {
-            var asm = Assembly.LoadFrom("Components\\LiveSplit.Text.dll");
-            var comp = Activator.CreateInstance(asm.GetType("LiveSplit.UI.Components.TextComponent"), timer);
-            var lc = new LiveSplit.UI.Components.LayoutComponent(
-                "LiveSplit.Text.dll", comp as LiveSplit.UI.Components.IComponent);
-
-            int idx = (int)vars.INSERT_INDEX;
-            if (idx < 0 || idx > timer.Layout.LayoutComponents.Count)
-                idx = timer.Layout.LayoutComponents.Count;
-            timer.Layout.LayoutComponents.Insert(idx, lc);
-
-            vars.spawnLC = lc;
-            vars.spawnSettings = comp.GetType()
-                .GetProperty("Settings", BindingFlags.Instance | BindingFlags.Public)
-                .GetValue(comp, null);
-        }
-        return vars.spawnSettings;
-    });
-
-    // ---- Displays the round on the left and the grenade count on the right ----
-    vars.SetComp = (Action<string, string>)((left, right) =>
-    {
-        object s = vars.EnsureComp();
-        s.GetType().GetProperty("Text1").SetValue(s, new string(' ', (int)vars.PAD) + left, null);
-        s.GetType().GetProperty("Text2").SetValue(s, right, null);
-        try
-        {
-            // Also disable "Center Text" if this LiveSplit version has the option
-            var cp = s.GetType().GetProperty("CenterText");
-            if (cp != null) cp.SetValue(s, false, null);
+            var pi = timer.GetType().GetProperty("Form");
+            if (pi != null) f = pi.GetValue(timer, null) as System.Windows.Forms.Form;
         }
         catch (Exception) { }
 
-        try
+        if (!(bool)vars.USE_UI_THREAD || f == null || f.IsDisposed
+            || !f.IsHandleCreated || !f.InvokeRequired)
         {
-            float size = 12f;
-            var newFont = new System.Drawing.Font("Calibri Light Regular", size, System.Drawing.FontStyle.Regular);
-
-            s.GetType().GetProperty("Font1").SetValue(s, newFont, null);
-            s.GetType().GetProperty("OverrideFont1").SetValue(s, true, null);
-
-            s.GetType().GetProperty("Font2").SetValue(s, newFont, null);
-            s.GetType().GetProperty("OverrideFont2").SetValue(s, true, null);
+            a();
         }
-        catch (Exception e) { print("JugGrenades: font failed: " + e.Message); }
+        else
+        {
+            f.BeginInvoke(a);
+        }
     });
 
-    // ---- Cleanup of old components left in the layout (previous session / crash) ----
-    try
+    // ---- Returns the TextComponent settings of a layout component, or null ----
+    vars.GetSettings = (Func<object, object>)(lc =>
     {
-        var known = (HashSet<string>)vars.known;
-        var stale = timer.Layout.LayoutComponents.Where(x => {
-            var comp = x.GetType().GetProperty("Component").GetValue(x, null);
-            if (comp == null || comp.GetType().Name != "TextComponent") return false;
-            var s = comp.GetType().GetProperty("Settings").GetValue(comp, null);
-            var t2 = s.GetType().GetProperty("Text2").GetValue(s, null) as string;
-            return t2 != null && known.Contains(t2.Trim());
-        }).ToList();
-        foreach (var lc in stale)
-            timer.Layout.LayoutComponents.Remove(lc);
-    }
-    catch (Exception) { }
+        try
+        {
+            var comp = lc.GetType().GetProperty("Component").GetValue(lc, null);
+            if (comp == null || comp.GetType().Name != "TextComponent") return null;
+            return comp.GetType().GetProperty("Settings").GetValue(comp, null);
+        }
+        catch (Exception) { return null; }
+    });
+
+    // ---- Is this layout component one of "our" grenade text components? ----
+    vars.IsOurs = (Func<object, bool>)(lc =>
+    {
+        try
+        {
+            var getS = (Func<object, object>)vars.GetSettings;
+            object s = getS(lc);
+            if (s == null) return false;
+            string t2 = s.GetType().GetProperty("Text2").GetValue(s, null) as string;
+            if (t2 == null) return false;
+            return ((System.Text.RegularExpressions.Regex)vars.rx).IsMatch(t2.Trim());
+        }
+        catch (Exception) { return false; }
+    });
+
+    // ---- Finds the LiveSplit.Text assembly (already loaded, else from LiveSplit folder) ----
+    vars.GetTextAsm = (Func<Assembly>)(() =>
+    {
+        foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            if (a.GetName().Name == "LiveSplit.Text") return a;
+        }
+        string p = System.IO.Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory, "Components", "LiveSplit.Text.dll");
+        return Assembly.LoadFrom(p);
+    });
+
+    // ---- RECONCILE: make the layout match the wanted state. UI THREAD ONLY. ----
+    //   want == false : remove every grenade component
+    //   want == true  : exactly one grenade component showing left / right
+    vars.Reconcile = (Action<bool, string, string>)((want, left, right) =>
+    {
+        // IMPORTANT: 'timer' is dynamic in ASL. Calling Remove() on a dynamic IList<T>
+        // fails ("does not contain a definition for 'Remove'"), so the list is
+        // converted to a statically typed variable first.
+        System.Collections.Generic.IList<LiveSplit.UI.Components.ILayoutComponent> comps =
+            timer.Layout.LayoutComponents;
+        var isOurs = (Func<object, bool>)vars.IsOurs;
+        var getS = (Func<object, object>)vars.GetSettings;
+
+        var matches = comps.Where(c => isOurs(c)).ToList();
+
+        object s = null;
+        bool created = false;
+
+        if (!want)
+        {
+            foreach (var m in matches) comps.Remove(m);
+        }
+        else if (matches.Count == 0)
+        {
+            var asm = ((Func<Assembly>)vars.GetTextAsm)();
+            var comp = Activator.CreateInstance(
+                asm.GetType("LiveSplit.UI.Components.TextComponent"), timer);
+            var lc = new LiveSplit.UI.Components.LayoutComponent(
+                "LiveSplit.Text.dll", comp as LiveSplit.UI.Components.IComponent);
+            comps.Insert(comps.Count, lc); // at the very bottom of the layout
+            s = getS(lc);
+            created = true;
+            print("JugGrenades: component created");
+        }
+        else
+        {
+            // Keep the LAST one (closest to the bottom; ours, or the one received
+            // from the host), remove every other copy.
+            var keep = matches[matches.Count - 1];
+            if (matches.Count > 1) print("JugGrenades: removing " + (matches.Count - 1) + " duplicate(s)");
+            for (int i = 0; i < matches.Count - 1; i++) comps.Remove(matches[i]);
+            s = getS(keep);
+
+            // Always keep it at the very bottom of the layout
+            if ((bool)vars.KEEP_AT_BOTTOM && comps.IndexOf(keep) != comps.Count - 1)
+            {
+                comps.Remove(keep);
+                comps.Insert(comps.Count, keep);
+            }
+        }
+
+        if (want && s != null)
+        {
+            var t = s.GetType();
+
+            // Texts (only written when different, to avoid useless redraws)
+            string cur1 = t.GetProperty("Text1").GetValue(s, null) as string;
+            if (cur1 != left) t.GetProperty("Text1").SetValue(s, left, null);
+
+            string cur2 = t.GetProperty("Text2").GetValue(s, null) as string;
+            if (cur2 != right) t.GetProperty("Text2").SetValue(s, right, null);
+
+            if (created)
+            {
+                try
+                {
+                    var cp = t.GetProperty("CenterText");
+                    if (cp != null) cp.SetValue(s, false, null);
+                }
+                catch (Exception) { }
+
+                try
+                {
+                    float size = Convert.ToSingle(vars.FONT_SIZE);
+                    if (size <= 0f) size = 12f;
+                    var newFont = new System.Drawing.Font(
+                        "Calibri Light Regular", size, System.Drawing.FontStyle.Regular);
+
+                    t.GetProperty("Font1").SetValue(s, newFont, null);
+                    t.GetProperty("OverrideFont1").SetValue(s, true, null);
+                    t.GetProperty("Font2").SetValue(s, newFont, null);
+                    t.GetProperty("OverrideFont2").SetValue(s, true, null);
+                }
+                catch (Exception e) { print("JugGrenades: font failed: " + e.Message); }
+            }
+        }
+    });
+
+    // ---- Queues a reconcile on the UI thread (one job at a time) ----
+    vars.Queue = (Action<bool, string, string>)((want, left, right) =>
+    {
+        bool skip = false;
+        if ((bool)vars.busy)
+        {
+            // watchdog: a job stuck for more than 3 s is abandoned
+            if ((long)vars.sw.ElapsedMilliseconds < 3000) skip = true;
+            else print("JugGrenades: previous job stuck, resetting");
+        }
+
+        if (!skip)
+        {
+            vars.busy = true;
+            vars.sw.Restart();
+            vars.lastWant = want;
+            vars.lastLeft = left;
+            vars.lastRight = right;
+
+            var ui = (Action<Action>)vars.Ui;
+            ui((Action)(() =>
+            {
+                try { ((Action<bool, string, string>)vars.Reconcile)(want, left, right); }
+                catch (Exception e) { print("JugGrenades: reconcile error: " + e.ToString()); }
+                finally { vars.busy = false; }
+            }));
+        }
+    });
 }
 
 update
@@ -192,45 +299,51 @@ update
                 bool hasJug  = s.IndexOf("jug",  StringComparison.OrdinalIgnoreCase) >= 0;
                 if (hasCoop || hasSolo) { isActive = hasSolo && !hasCoop && hasJug; break; }
             }
-            if (isActive != (bool)vars.active)
-            {
-                vars.active = isActive;
-                vars.lastRound = -1; // force a refresh
-            }
+            vars.active = isActive;
         }
 
         // Round = current split index + 1 (1st split = round 1)
         int round = timer.CurrentSplitIndex + 1;
         if (round < 1) round = 1;
 
-        bool shouldShow = (bool)vars.active
-                       && round >= (int)vars.MIN_ROUND
-                       && round <= (int)vars.MAX_ROUND;
+        bool want = (bool)vars.active
+                 && round >= (int)vars.MIN_ROUND
+                 && round <= (int)vars.MAX_ROUND;
 
-        if (!shouldShow)
+        string left = null;
+        string right = null;
+        if (want)
         {
-            // Outside the range (or not a Jug + Solo comparison): no component
-            if (vars.spawnSettings != null || (int)vars.lastRound != -2)
-            {
-                vars.RemoveComp();
-                vars.lastRound = -2; // marker: already removed
-            }
-        }
-        else if (round != (int)vars.lastRound || vars.spawnSettings == null)
-        {
-            vars.lastRound = round;
             var dict = (Dictionary<int, int>)vars.grenades;
             int total;
-            string right = (dict.TryGetValue(round, out total) ? total.ToString() : "?")
-                           + (string)vars.SUFFIX;
-            vars.SetComp(round.ToString(), right);
+            string count = dict.TryGetValue(round, out total) ? total.ToString() : "?";
+            left = new string(' ', (int)vars.PAD) + round.ToString();
+            right = count + (string)vars.SUFFIX;
         }
+
+        bool changed = want != (bool)vars.lastWant
+                    || left != (string)vars.lastLeft
+                    || right != (string)vars.lastRight;
+        bool due = (long)vars.sw.ElapsedMilliseconds >= (int)vars.RECHECK_MS;
+
+        if (changed || due)
+            ((Action<bool, string, string>)vars.Queue)(want, left, right);
     }
     catch (Exception e) { print("JugGrenades: update error: " + e.ToString()); }
 }
 
 shutdown
 {
-    // Remove the component when the script is unloaded
-    try { vars.RemoveComp(); } catch (Exception) { }
+    // Remove the component when the script is unloaded (asynchronously, so we
+    // never block/deadlock against the UI thread while LiveSplit is closing)
+    try
+    {
+        var ui = (Action<Action>)vars.Ui;
+        ui((Action)(() =>
+        {
+            try { ((Action<bool, string, string>)vars.Reconcile)(false, null, null); }
+            catch (Exception) { }
+        }));
+    }
+    catch (Exception) { }
 }

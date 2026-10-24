@@ -181,7 +181,3 @@ Pausing the game natively via the game's pause menu freezes the internal game cl
 - [Zi0](https://github.com/Zi0MIX) for developing the [T6-B2FR-PATCH](https://github.com/B2ORG/T6-B2FR-PATCH) (BO2 First Room) and the B2SONG patch, referenced in the Categories section.
 - [EvelynYuki](https://gitlab.com/EvelynYuki) for developing the [Competitive-T5](https://gitlab.com/EvelynYuki/Competitive-T5) plugin (BO1 First Room), referenced in the Categories section.
 - [HuthTV](https://github.com/HuthTV) for developing the [Easter Egg GSC Timer](https://github.com/HuthTV/BO2-Easter-Egg-GSC-timer) (BO2 EE Speedrun), referenced in the Categories section.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
